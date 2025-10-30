@@ -5,36 +5,33 @@ import com.rank.gamified_trading.dto.response.UserResponse;
 import com.rank.gamified_trading.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users") // base path
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     @PostMapping
-    public Map<String, Object> createUser(@Valid CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         UserResponse response = userService.createUser(request.username().trim());
-        return Map.of(
-                "success", true,
-                "data", response
-        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> getUser(String userId) {
+    public ResponseEntity<?> getUser(@PathVariable String id) {
         try {
-            UserResponse response = userService.getUser(userId);
-            return Map.of("success", true, "data", response);
+            UserResponse response = userService.getUser(id);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return Map.of("success", false, "error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 }
