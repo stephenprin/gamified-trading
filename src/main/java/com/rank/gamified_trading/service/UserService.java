@@ -4,7 +4,9 @@ import com.rank.gamified_trading.domain.User;
 import com.rank.gamified_trading.dto.response.UserResponse;
 import com.rank.gamified_trading.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;

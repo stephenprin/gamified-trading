@@ -5,15 +5,21 @@ import com.rank.gamified_trading.dto.response.UserResponse;
 import com.rank.gamified_trading.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
 
+@RestController
+@RequestMapping("/users") // base path
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    // POST /users
+    @PostMapping
     public Map<String, Object> createUser(@Valid CreateUserRequest request) {
         UserResponse response = userService.createUser(request.username().trim());
         return Map.of(
@@ -22,7 +28,7 @@ public class UserController {
         );
     }
 
-    // GET /users/{id}
+    @GetMapping("/{id}")
     public Map<String, Object> getUser(String userId) {
         try {
             UserResponse response = userService.getUser(userId);
@@ -30,14 +36,5 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             return Map.of("success", false, "error", e.getMessage());
         }
-    }
-
-    // Helper: Handle validation errors (if you want centralized handling)
-    public static Map<String, Object> handleValidationError(List<String> errors) {
-        return Map.of(
-                "success", false,
-                "error", "Validation failed",
-                "details", errors
-        );
     }
 }
