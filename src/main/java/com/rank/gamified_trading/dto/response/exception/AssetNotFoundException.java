@@ -1,4 +1,4 @@
-package com.rank.gamified_trading.exception;
+package com.rank.gamified_trading.dto.response.exception;
 
 public class AssetNotFoundException extends RuntimeException {
 

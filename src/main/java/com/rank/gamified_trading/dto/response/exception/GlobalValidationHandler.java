@@ -1,4 +1,4 @@
-package com.rank.gamified_trading.exception;
+package com.rank.gamified_trading.dto.response.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;

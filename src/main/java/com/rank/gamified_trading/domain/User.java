@@ -13,14 +13,21 @@ public class User {
     @EqualsAndHashCode.Include
     private final String userId;
     private final String username;
-
     private int gemCount = 0;
     @Setter
     private int rank = 0;
     private int tradeCount = 0;
 
+    private final Portfolio portfolio;
+
+
     public static User create(String username) {
-        return new User(UUID.randomUUID().toString(), username);
+        String userId = UUID.randomUUID().toString();
+        return new User(
+                userId,
+                username.trim(),
+                Portfolio.of(userId) 
+        );
     }
 
     public void addGems(int gems) {
@@ -31,5 +38,6 @@ public class User {
     public void incrementTradeCount() {
         this.tradeCount++;
     }
+
 
 }
