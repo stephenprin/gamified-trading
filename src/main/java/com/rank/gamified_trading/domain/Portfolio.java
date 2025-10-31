@@ -52,14 +52,15 @@ public class Portfolio {
 
         assets.remove(existing);
         if (newQty > 0) {
-            assets.add(existing.withQuantity(newQty));
+            assets.add(existing.adjustQuantity(newQty));
         }
     }
 
     // Dynamic portfolio value
     public double getTotalValue() {
         return assets.stream()
-                .mapToDouble(Asset::getValue)
+                .mapToDouble(Asset::
+                        calculateMarketValue)
                 .sum();
     }
 

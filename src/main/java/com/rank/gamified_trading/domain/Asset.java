@@ -16,16 +16,16 @@ public class Asset {
     private final int quantity;
     private final double price;  // avg price or last buy price
 
-    public double getValue() {
+    public double calculateMarketValue() {
         return quantity * price;
     }
 
     // Used internally for updates
-    public Asset withQuantity(int newQuantity) {
+    public Asset adjustQuantity(int newQuantity) {
         return new Asset(assetId, name, newQuantity, price);
     }
 
-    public Asset withPrice(double newPrice) {
+    public Asset updatePrice(double newPrice) {
         return new Asset(assetId, name, quantity, newPrice);
     }
 }

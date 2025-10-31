@@ -26,6 +26,11 @@ public class GlobalValidationHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, errors);
     }
 
+    @ExceptionHandler(AssetNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleAssetNotFound(AssetNotFoundException ex) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, List.of(ex.getMessage()));
+    }
+
     // Handles @Valid @RequestBody errors (e.g., JSON payloads)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
