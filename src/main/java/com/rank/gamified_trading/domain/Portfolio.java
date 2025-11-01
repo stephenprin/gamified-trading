@@ -64,7 +64,7 @@ public class Portfolio {
                 .sum();
     }
 
-    private Asset findAssetById(String assetId) {
+    public Asset findAssetById(String assetId) {
         return assets.stream()
                 .filter(a -> a.getAssetId().equals(assetId))
                 .findFirst()
