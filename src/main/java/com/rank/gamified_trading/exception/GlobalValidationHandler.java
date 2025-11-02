@@ -1,4 +1,4 @@
-package com.rank.gamified_trading.dto.response.exception;
+package com.rank.gamified_trading.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -39,6 +39,12 @@ public class GlobalValidationHandler {
                 .toList();
 
         return buildErrorResponse(HttpStatus.BAD_REQUEST, errors);
+    }
+
+    // Handles invalid arguments thrown manually
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, List.of(ex.getMessage()));
     }
 
     // Generic builder for error responses

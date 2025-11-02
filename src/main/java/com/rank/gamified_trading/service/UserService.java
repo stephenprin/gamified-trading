@@ -70,8 +70,4 @@ public class UserService {
         user.setLastTradeAt(now);
     }
 
-
-    public void updateUser(User user) {
-        userRepository.save(user);
-    }
 }

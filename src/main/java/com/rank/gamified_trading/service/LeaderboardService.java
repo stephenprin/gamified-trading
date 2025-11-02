@@ -18,9 +18,9 @@ public class LeaderboardService {
     private final UserRepository userRepository;
     private final List<User> leaderboard = new CopyOnWriteArrayList<>();
 
-    /**
-     * Update leaderboard when a user's gem count changes.
-     */
+
+    //Update leaderboard when a user's gem count changes.
+
     public synchronized void updateRankings() {
         List<User> users = userRepository.findAll();
 

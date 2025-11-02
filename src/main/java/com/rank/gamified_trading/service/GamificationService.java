@@ -16,8 +16,6 @@ public class GamificationService {
         User updatedUser = userService.awardGemsForTrade(userId);
         leaderboardService.updateRankings(); // auto-refresh after gem change
 
-        // Later: you’ll call leaderboardService.updateRankings(updatedUser)
-        // For now, just log or print gem progress.
         System.out.printf("User %s now has %d gems and rank #%d%n",
                 updatedUser.getUsername(), updatedUser.getGemCount(), updatedUser.getRank());
     }

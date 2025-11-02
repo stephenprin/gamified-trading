@@ -5,7 +5,7 @@ import com.rank.gamified_trading.domain.AssetCatalog;
 import com.rank.gamified_trading.domain.Portfolio;
 import com.rank.gamified_trading.dto.request.TradeRequest;
 import com.rank.gamified_trading.dto.response.PortfolioResponse;
-import com.rank.gamified_trading.dto.response.exception.AssetNotFoundException;
+import com.rank.gamified_trading.exception.AssetNotFoundException;
 import com.rank.gamified_trading.repository.PortfolioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

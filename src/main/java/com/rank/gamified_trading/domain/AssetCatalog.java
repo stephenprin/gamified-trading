@@ -17,11 +17,11 @@ public class AssetCatalog {
     public record AssetInfo(String assetId, String name, double currentPrice) {}
 
     public AssetCatalog() {
-        add("BTC", "Bitcoin", 50000.0);
-        add("ETH", "Ethereum", 3000.0);
-        add("AAPL", "Apple Inc.", 175.0);
-        add("GOOGL", "Alphabet Inc.", 2800.0);
-        add("AMZN", "Amazon.com Inc.", 3400.0);
+        add("BTC", "Bitcoin", 50000.00);
+        add("ETH", "Ethereum", 3000.00);
+        add("AAPL", "Apple Inc.", 175.00);
+        add("GOOGL", "Alphabet Inc.", 2800.00);
+        add("AMZN", "Amazon.com Inc.", 3400.00);
     }
 
     private void add(String id, String name, double price) {
