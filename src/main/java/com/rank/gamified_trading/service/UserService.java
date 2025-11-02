@@ -7,6 +7,9 @@ import com.rank.gamified_trading.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.Duration;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -31,9 +34,13 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        handleTradeStreakTimeReset(user);
+
         // 1 gem per trade
         user.incrementTradeCount();
         user.addGems(1);
+
+  
 
         // milestone bonuses
         int bonus = user.calculateBonusGems();
@@ -41,8 +48,26 @@ public class UserService {
             user.addGems(bonus);
         }
 
-        userRepository.save(user);
-        return user;
+        //  Track trading streak
+        user.recordTradeStreak();
+        int streakBonus = user.calculateStreakBonus();
+        if (streakBonus > 0) {
+            user.addGems(streakBonus);
+        }
+
+        return userRepository.save(user);
+    }
+
+    public void handleTradeStreakTimeReset(User user) {
+        Instant now = Instant.now();
+
+        if (user.getLastTradeAt() == null ||
+                Duration.between(user.getLastTradeAt(), now).toHours() >= 24) {
+            user.resetStreak(); // reset streak if first trade or last trade was over 24h ago
+        }
+
+        // Update the last trade timestamp
+        user.setLastTradeAt(now);
     }
 
 

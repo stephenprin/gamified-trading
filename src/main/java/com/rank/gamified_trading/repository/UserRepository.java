@@ -2,7 +2,6 @@ package com.rank.gamified_trading.repository;
 
 import com.rank.gamified_trading.domain.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,8 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserRepository {
     private final Map<String, User> users = new ConcurrentHashMap<>();
 
-    public void save(User user) {
+    public User save(User user) {
         users.put(user.getUserId(), user);
+        return user;
     }
 
     public Optional<User> findById(String userId) {

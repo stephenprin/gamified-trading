@@ -4,6 +4,7 @@ import com.rank.gamified_trading.domain.Portfolio;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,5 +25,9 @@ public class PortfolioRepository {
 
     public Portfolio getOrCreate(String userId) {
         return portfolios.computeIfAbsent(userId, Portfolio::of);
+    }
+
+    public List<Portfolio> findAll() {
+        return List.copyOf(portfolios.values());
     }
 }

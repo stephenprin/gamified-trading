@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.Map;
 import java.util.UUID;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -18,6 +19,9 @@ public class User {
     private int gemCount = 0;
     private int rank = 0;
     private int tradeCount = 0;
+    private int currentStreak;
+    private int longestStreak;
+    private Instant lastTradeAt;
 
     private final Portfolio portfolio;
 
@@ -53,5 +57,23 @@ public class User {
         return BONUS_MILESTONES.getOrDefault(this.tradeCount, 0);
     }
 
+    public void recordTradeStreak() {
+        this.currentStreak++;
+
+        // Update longest streak if beaten
+        if (this.currentStreak > this.longestStreak) {
+            this.longestStreak = this.currentStreak;
+        }
+    }
+
+    public void resetStreak() {
+        this.currentStreak = 0;
+    }
+
+    public int calculateStreakBonus() {
+        // Example rule: +streak gems for every 3-trade streak milestone
+        if (currentStreak % 3 == 0) return currentStreak;
+        return 0;
+    }
 
 }
