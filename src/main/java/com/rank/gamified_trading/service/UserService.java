@@ -3,7 +3,6 @@ package com.rank.gamified_trading.service;
 import com.rank.gamified_trading.domain.User;
 import com.rank.gamified_trading.dto.response.PortfolioResponse;
 import com.rank.gamified_trading.dto.response.UserResponse;
-import com.rank.gamified_trading.repository.PortfolioRepository;
 import com.rank.gamified_trading.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +25,24 @@ public class UserService {
 
         PortfolioResponse portfolio = portfolioService.getPortfolio(userId);
         return UserResponse.from(user, portfolio);
+    }
+
+    public User awardGemsForTrade(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // 1 gem per trade
+        user.incrementTradeCount();
+        user.addGems(1);
+
+        // milestone bonuses
+        int bonus = user.calculateBonusGems();
+        if (bonus > 0) {
+            user.addGems(bonus);
+        }
+
+        userRepository.save(user);
+        return user;
     }
 
 

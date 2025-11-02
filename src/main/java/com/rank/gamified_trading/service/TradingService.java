@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class TradingService {
 
     private final PortfolioRepository portfolioRepository;
+    private final GamificationService gamificationService;
     private final AssetCatalog assetCatalog;
 
 
@@ -28,6 +29,8 @@ public class TradingService {
         portfolio.addAsset(assetInfo.assetId(), assetInfo.name(), request.quantity(), assetInfo.currentPrice());
 
         portfolioRepository.save(portfolio);
+        // 🎯 Award gems and milestone bonuses
+        gamificationService.handleTradeGamification(userId);
         return PortfolioResponse.from(portfolio);
     }
 
@@ -46,6 +49,7 @@ public class TradingService {
         portfolio.removeAsset(request.assetId(), request.quantity());
         portfolioRepository.save(portfolio);
 
+        gamificationService.handleTradeGamification(userId);
         return PortfolioResponse.from(portfolio);
     }
 }
