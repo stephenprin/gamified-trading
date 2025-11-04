@@ -1,6 +1,5 @@
-package com.rank.gamified_trading.domain;
+package com.rank.gamified_trading.model;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class Portfolio {
     private final String userId;
     private final List<Asset> assets = new CopyOnWriteArrayList<>();
@@ -23,9 +22,8 @@ public class Portfolio {
 
         Asset existing = findAssetById(assetId);
         if (existing != null) {
-            // Update quantity and recalculate avg price
-            int totalQty = existing.getQuantity() + quantity;
-            double totalCost = (existing.getQuantity() * existing.getPrice()) + (quantity * price);
+            int totalQty = existing.quantity() + quantity;
+            double totalCost = (existing.quantity() * existing.price()) + (quantity * price);
             double avgPrice = totalQty == 0 ? 0 : totalCost / totalQty;
 
             Asset updated = new Asset(assetId, name, totalQty, avgPrice);
@@ -45,7 +43,7 @@ public class Portfolio {
             throw new IllegalArgumentException("Asset not found: " + assetId);
         }
 
-        int newQty = existing.getQuantity() - quantity;
+        int newQty = existing.quantity() - quantity;
         if (newQty < 0) {
             throw new IllegalArgumentException("Not enough quantity to remove");
         }
@@ -56,7 +54,6 @@ public class Portfolio {
         }
     }
 
-    // Dynamic portfolio value
     public double getTotalValue() {
         return assets.stream()
                 .mapToDouble(Asset::
@@ -66,7 +63,7 @@ public class Portfolio {
 
     public Asset findAssetById(String assetId) {
         return assets.stream()
-                .filter(a -> a.getAssetId().equals(assetId))
+                .filter(a -> a.assetId().equals(assetId))
                 .findFirst()
                 .orElse(null);
     }

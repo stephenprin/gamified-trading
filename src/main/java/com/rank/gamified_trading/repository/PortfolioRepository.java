@@ -1,6 +1,6 @@
 package com.rank.gamified_trading.repository;
 
-import com.rank.gamified_trading.domain.Portfolio;
+import com.rank.gamified_trading.model.Portfolio;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 

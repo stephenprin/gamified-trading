@@ -1,7 +1,6 @@
 package com.rank.gamified_trading.dto.response;
 
-import com.rank.gamified_trading.domain.Asset;
-import com.rank.gamified_trading.domain.User;
+import com.rank.gamified_trading.model.User;
 
 import java.util.Collections;
 import java.util.List;

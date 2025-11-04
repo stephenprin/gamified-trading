@@ -1,6 +1,6 @@
 package com.rank.gamified_trading.repository;
 
-import com.rank.gamified_trading.domain.User;
+import com.rank.gamified_trading.model.User;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +15,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserRepository {
     private final Map<String, User> users = new ConcurrentHashMap<>();
 
+    public Optional<User> findByUsername(String username) {
+        return users.values().stream()
+                .filter(u -> u.getUsername().equalsIgnoreCase(username.trim()))
+                .findFirst();
+    }
+
     public User save(User user) {
+        findByUsername(user.getUsername()).ifPresent(existing -> {
+            throw new IllegalArgumentException("Username already exists: " + user.getUsername());
+        });
         users.put(user.getUserId(), user);
         return user;
     }
@@ -28,11 +37,4 @@ public class UserRepository {
         return new ArrayList<>(users.values());
     }
 
-    public boolean existsById(String userId) {
-        return users.containsKey(userId);
-    }
-
-    public long count() {
-        return users.size();
-    }
 }

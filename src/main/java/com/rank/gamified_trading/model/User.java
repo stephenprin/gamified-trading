@@ -1,4 +1,4 @@
-package com.rank.gamified_trading.domain;
+package com.rank.gamified_trading.model;
 
 
 import lombok.*;
@@ -10,10 +10,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class User {
-    @EqualsAndHashCode.Include
     private final String userId;
     private final String username;
     private int gemCount = 0;
@@ -59,7 +57,6 @@ public class User {
 
     public void recordTradeStreak() {
         this.currentStreak++;
-
         // Update longest streak if beaten
         if (this.currentStreak > this.longestStreak) {
             this.longestStreak = this.currentStreak;
@@ -71,7 +68,6 @@ public class User {
     }
 
     public int calculateStreakBonus() {
-        // Example rule: +streak gems for every 3-trade streak milestone
         if (currentStreak % 3 == 0) return currentStreak;
         return 0;
     }

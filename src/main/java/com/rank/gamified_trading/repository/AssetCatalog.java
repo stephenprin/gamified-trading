@@ -1,4 +1,4 @@
-package com.rank.gamified_trading.domain;
+package com.rank.gamified_trading.repository;
 
 import lombok.Getter;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -45,7 +45,4 @@ public class AssetCatalog {
         return catalog.get(assetId);
     }
 
-    public boolean exists(String assetId) {
-        return catalog.containsKey(assetId);
-    }
 }

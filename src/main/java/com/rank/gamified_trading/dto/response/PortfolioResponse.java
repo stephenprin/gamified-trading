@@ -1,7 +1,7 @@
 package com.rank.gamified_trading.dto.response;
 
-import com.rank.gamified_trading.domain.Asset;
-import com.rank.gamified_trading.domain.Portfolio;
+import com.rank.gamified_trading.model.Asset;
+import com.rank.gamified_trading.model.Portfolio;
 
 import java.util.List;
 
@@ -26,6 +26,6 @@ record AssetDto(
         double value
 ) {
     static AssetDto from(Asset a) {
-        return new AssetDto(a.getAssetId(), a.getName(), a.getQuantity(), a.getPrice(), a.calculateMarketValue());
+        return new AssetDto(a.assetId(), a.name(), a.quantity(), a.price(), a.calculateMarketValue());
     }
 }

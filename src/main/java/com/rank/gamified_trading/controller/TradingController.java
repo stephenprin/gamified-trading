@@ -9,20 +9,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/trades")
+@RequestMapping("/trades/{userId}")
 @RequiredArgsConstructor
 public class TradingController {
 
     private final TradingService tradingService;
 
-    @PostMapping("/{userId}/buy")
+    @PostMapping("/buy")
     public ResponseEntity<PortfolioResponse> buyAsset(
             @PathVariable String userId,
             @Valid @RequestBody TradeRequest request) {
         return ResponseEntity.ok(tradingService.buyAsset(userId, request));
     }
 
-    @PostMapping("/{userId}/sell")
+    @PostMapping("/sell")
     public ResponseEntity<PortfolioResponse> sellAsset(
             @PathVariable String userId,
             @Valid @RequestBody TradeRequest request) {

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users/{userId}/portfolio")
+@RequestMapping("/portfolio/{userId}")
 @RequiredArgsConstructor
 public class PortfolioController {
 
@@ -35,7 +35,7 @@ public class PortfolioController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/assets")
     public ResponseEntity<PortfolioResponse> getPortfolio(@PathVariable String userId) {
         PortfolioResponse response = portfolioService.getPortfolio(userId);
         return ResponseEntity.ok(response);

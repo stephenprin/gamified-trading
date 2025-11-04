@@ -1,7 +1,6 @@
 package com.rank.gamified_trading.controller;
 
 
-import com.rank.gamified_trading.domain.User;
 import com.rank.gamified_trading.dto.response.UserResponse;
 import com.rank.gamified_trading.service.LeaderboardService;
 import lombok.RequiredArgsConstructor;
