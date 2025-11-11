@@ -56,4 +56,29 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                  .map(user -> UserResponse.from(user, null))
                  .collect(Collectors.toList());
      }
+
+    public List<UserResponse> getAllRankedUsers() {
+        List<User> users = userRepository.findAll().stream()
+                .sorted(Comparator.comparingInt(User::getGemCount)
+                        .reversed()
+                        .thenComparing(User::getUsername))
+                .toList();
+
+        int currentRank = 1;
+        int previousGemCount = -1;
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getGemCount() != previousGemCount) {
+                currentRank = i + 1;
+                previousGemCount = user.getGemCount();
+            }
+            user.setRank(currentRank);
+        }
+
+        return users.stream()
+                .map(user -> UserResponse.from(user, null))
+                .collect(Collectors.toList());
+    }
+
 }

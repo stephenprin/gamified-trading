@@ -7,4 +7,5 @@ import java.util.List;
 public interface LeaderboardService {
     void updateRankings();
     List<UserResponse> getTopN(int n);
+    List<UserResponse> getAllRankedUsers();
 }

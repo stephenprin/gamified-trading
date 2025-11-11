@@ -23,7 +23,9 @@ public class UserRepository {
 
     public User save(User user) {
         findByUsername(user.getUsername()).ifPresent(existing -> {
-            throw new IllegalArgumentException("Username already exists: " + user.getUsername());
+            if (!existing.getUserId().equals(user.getUserId())) {
+                throw new IllegalArgumentException("Username already exists: " + user.getUsername());
+            }
         });
         users.put(user.getUserId(), user);
         return user;
@@ -35,6 +37,11 @@ public class UserRepository {
 
     public List<User> findAll() {
         return new ArrayList<>(users.values());
+    }
+
+
+    public void clear() {
+        users.clear();
     }
 
 }
