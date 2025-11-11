@@ -3,6 +3,7 @@ package com.rank.gamified_trading.controller;
 import com.rank.gamified_trading.dto.response.TradedAssetResponse;
 import com.rank.gamified_trading.dto.response.UserResponse;
 import com.rank.gamified_trading.service.PortfolioAnalyticsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/insights")
+@Tag(
+        name = "Portfolio Insights",
+        description = "Endpoints providing analytical insights such as top investors and most traded assets."
+)
 @RequiredArgsConstructor
 public class PortfolioAnalyticsController {
 

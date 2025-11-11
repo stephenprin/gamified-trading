@@ -3,6 +3,7 @@ package com.rank.gamified_trading.controller;
 
 import com.rank.gamified_trading.dto.response.UserResponse;
 import com.rank.gamified_trading.service.LeaderboardService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/leaderboard")
+@Tag(
+        name = "Leaderboard Management",
+        description = "Endpoints for managing and retrieving ranked users based on gem counts and achievements."
+)
 @RequiredArgsConstructor
 public class LeaderboardController {
 

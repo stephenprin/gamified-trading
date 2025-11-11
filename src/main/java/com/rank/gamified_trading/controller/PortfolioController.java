@@ -3,6 +3,7 @@ package com.rank.gamified_trading.controller;
 import com.rank.gamified_trading.dto.request.AssetRequest;
 import com.rank.gamified_trading.dto.response.PortfolioResponse;
 import com.rank.gamified_trading.service.PortfolioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/portfolio/{userId}")
+@Tag(
+        name = "Portfolio Management",
+        description = "Endpoints for managing user portfolios — adding, removing, and viewing assets."
+)
 @RequiredArgsConstructor
 public class PortfolioController {
 
