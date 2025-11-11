@@ -1,6 +1,9 @@
 package com.rank.gamified_trading.repository;
 
+import com.rank.gamified_trading.service.impl.GamificationServiceImpl;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Getter
 public class AssetCatalog {
+
+    private static final Logger log = LoggerFactory.getLogger(GamificationServiceImpl.class);
     private final Map<String, AssetInfo> catalog = new ConcurrentHashMap<>();
     private final Random random = new Random();
 
@@ -38,7 +43,8 @@ public class AssetCatalog {
             double roundedPrice = Math.round(newPrice * 100.0) / 100.0;
             catalog.put(id, new AssetInfo(asset.assetId(), asset.name(), Math.max(1.00, roundedPrice)));
         });
-        System.out.println("Asset prices updated dynamically.");
+        log.info("Asset prices updated dynamically.");
+
     }
 
     public AssetInfo get(String assetId) {

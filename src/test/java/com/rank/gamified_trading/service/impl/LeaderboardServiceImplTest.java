@@ -99,5 +99,4 @@ class LeaderboardServiceImplTest {
         assertTrue(ranked.stream().anyMatch(u -> u.username().equals("TestZeroUser")));
     }
 
-
 }

@@ -5,6 +5,8 @@ import com.rank.gamified_trading.dto.response.UserResponse;
 import com.rank.gamified_trading.repository.UserRepository;
 import com.rank.gamified_trading.service.LeaderboardService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class LeaderboardServiceImpl implements LeaderboardService {
-
+    private static final Logger log = LoggerFactory.getLogger(LeaderboardServiceImpl.class);
     private final UserRepository userRepository;
     private final List<User> leaderboard = new CopyOnWriteArrayList<>();
 
@@ -31,8 +33,8 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         leaderboard.addAll(users);
 
         assignRanks(users);
+        log.info("Leaderboard updated successfully. Total users ranked: {}", users.size());
     }
-
 
      // Assign ranks dynamically (ties share same rank)
     private void assignRanks(List<User> users) {
@@ -48,6 +50,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
             user.setRank(currentRank);
             userRepository.save(user);
         }
+        log.debug("Rank assignment complete.");
     }
 
      public List<UserResponse> getTopN(int n) {
@@ -75,10 +78,12 @@ public class LeaderboardServiceImpl implements LeaderboardService {
             }
             user.setRank(currentRank);
         }
-
-        return users.stream()
+        List<UserResponse> responses = users.stream()
                 .map(user -> UserResponse.from(user, null))
                 .collect(Collectors.toList());
+
+        log.info("Total ranked users fetched: {}", responses.size());
+        return responses;
     }
 
 }

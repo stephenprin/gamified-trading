@@ -9,11 +9,14 @@ import com.rank.gamified_trading.exception.AssetNotFoundException;
 import com.rank.gamified_trading.repository.PortfolioRepository;
 import com.rank.gamified_trading.service.TradingService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class TradingServiceImpl implements TradingService {
+    private static final Logger log = LoggerFactory.getLogger(TradingServiceImpl.class);
 
     private final PortfolioRepository portfolioRepository;
     private final GamificationServiceImpl gamificationServiceImpl;
@@ -22,7 +25,10 @@ public class TradingServiceImpl implements TradingService {
 
     public PortfolioResponse buyAsset(String userId, TradeRequest request) {
         var assetInfo = assetCatalog.get(request.assetId());
-        if (assetInfo == null) throw new AssetNotFoundException(request.assetId());
+        if (assetInfo == null) {
+            log.error("Asset not found in catalog: {}", request.assetId());
+            throw new AssetNotFoundException(request.assetId());
+        }
 
         Portfolio portfolio = portfolioRepository.getOrCreate(userId);
 
@@ -31,6 +37,7 @@ public class TradingServiceImpl implements TradingService {
         portfolioRepository.save(portfolio);
         // Award gems and milestone bonuses
         gamificationServiceImpl.handleTradeGamification(userId);
+        log.debug("Gamification processed for user {}", userId);
         return PortfolioResponse.from(portfolio);
     }
 
@@ -43,6 +50,8 @@ public class TradingServiceImpl implements TradingService {
         }
 
         if (existing.quantity() < request.quantity()) {
+            log.error("Insufficient quantity: User {} tried to sell {}x{}, owns only {}",
+                    userId, request.quantity(), request.assetId(), existing.quantity());
             throw new IllegalArgumentException("Not enough quantity to sell. You own: " + existing.quantity());
         }
 
@@ -50,6 +59,7 @@ public class TradingServiceImpl implements TradingService {
         portfolioRepository.save(portfolio);
 
         gamificationServiceImpl.handleTradeGamification(userId);
+        log.debug("Gamification processed after SELL for user {}", userId);
         return PortfolioResponse.from(portfolio);
     }
 }

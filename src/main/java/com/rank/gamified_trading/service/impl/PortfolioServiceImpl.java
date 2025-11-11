@@ -7,19 +7,24 @@ import com.rank.gamified_trading.exception.AssetNotFoundException;
 import com.rank.gamified_trading.repository.PortfolioRepository;
 import com.rank.gamified_trading.service.PortfolioService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PortfolioServiceImpl implements PortfolioService {
+    private static final Logger log = LoggerFactory.getLogger(PortfolioServiceImpl.class);
+
     private final PortfolioRepository portfolioRepository;
     private final AssetCatalog assetCatalog;
 
-
-
     public PortfolioResponse addAsset(String userId, String assetId, int quantity) {
         var asset = assetCatalog.get(assetId);
-        if (asset == null) throw new AssetNotFoundException("Invalid asset: " + assetId);
+        if (asset == null) {
+            log.error("Asset not found in catalog: {}", assetId);
+            throw new AssetNotFoundException("Invalid asset: " + assetId);
+        }
 
         Portfolio portfolio = portfolioRepository.getOrCreate(userId);
         portfolio.addAsset(asset.assetId(), asset.name(), quantity, asset.currentPrice());
@@ -32,6 +37,7 @@ public class PortfolioServiceImpl implements PortfolioService {
                 .orElseThrow(() -> new IllegalArgumentException("Portfolio not found"));
         portfolio.removeAsset(assetId, quantity);
         portfolioRepository.save(portfolio);
+        log.debug("Removed {} of asset {} from user {}'s portfolio", quantity, assetId, userId);
     }
 
     public PortfolioResponse getPortfolio(String userId) {
