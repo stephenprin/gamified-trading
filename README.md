@@ -52,6 +52,11 @@ The system also features real-time asset price simulation**
 -   No external DB required; tests use **in-memory repositories**.
 
 
+### Swagger Documentation of APIs
+
+http://localhost:8081/api/v1/swagger-ui/index.html
+
+
 
 ``` bash
 # Create a user
